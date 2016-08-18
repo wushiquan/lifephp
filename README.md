@@ -2,7 +2,7 @@
 LifePHP php framework，an excellent and open source php framework which aims at 'Make coding life more efficient,Let the program run faster'.
 
 ## DIRECTORY STRUCTURE
-  frontend/               an application used lifephp framework
+  frontend/               an application used lifephp framework<br>
   lifephp/                this is the core base structure of lifephp php framework
 
 ## REQUIREMENTS
