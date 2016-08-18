@@ -1,4 +1,21 @@
 # lifephp
-lifephp php framework beta 1.0
-LifePHP框架，一款性能优越，快速开发的开源免费PHP框架
-宗旨：编码高效，运行极速
+LifePHP php framework，a excellent and open source php framework which aims at 'Make coding life more efficient,Let the program run faster'.
+
+DIRECTORY STRUCTURE
+
+frontend/               an application used lifephp framework
+lifephp/                this is the core base structure of lifephp php framework
+
+REQUIREMENTS
+
+The minimum requirement by LifePHP  is that your server supports PHP 5.3 version.
+
+Thank you for using lifephp php framework to work as web development and we will provide you with the best framework resorce 
+forever.
+
+
+
+
+
+
+
