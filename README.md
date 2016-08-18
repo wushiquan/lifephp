@@ -1,5 +1,5 @@
 # LifePHP php Framework Version 1.0
-LifePHP php framework，a excellent and open source php framework which aims at 'Make coding life more efficient,Let the program run faster'.
+LifePHP php framework，an excellent and open source php framework which aims at 'Make coding life more efficient,Let the program run faster'.
 
 ## DIRECTORY STRUCTURE
 frontend/               an application used lifephp framework
