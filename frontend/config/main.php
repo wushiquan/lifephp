@@ -14,5 +14,6 @@ return [
     'name' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'frontend\controller',
-    'domain' => 'http://www.lifephp.com'
+    'domain' => 'http://www.lifephp.com',
+    'db' => require(__DIR__ . '/' . 'dbconfig.php'),
 ];
