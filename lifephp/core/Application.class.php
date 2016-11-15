@@ -55,7 +55,7 @@ class Application
             } else {
                 // empty controller
                 $namespace = APP_NAME . '\\' . $layer . '\\_empty';
-            }
+            }    
             if (class_exists($namespace) && is_file($controllerPath . CONTROLLER_NAME . EXT_SUFFIX)) {
                 $class = $namespace;
             } else {
