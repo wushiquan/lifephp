@@ -12,6 +12,7 @@
 // -----------------------------------------------------------------------
 
 namespace lifephp\core;
+use Life;
 class Lifephp
 {
     /**
@@ -31,6 +32,9 @@ class Lifephp
         register_shutdown_function('lifephp\core\Lifephp::getFatalError');
         set_error_handler('lifephp\core\Lifephp::lifeError');
         set_exception_handler('lifephp\core\Lifephp::lifeException');
+
+        //Init the database connection if the '$db' object is null.
+        Life::$frame->db = self::getDb();
 
         // run the application
         Application::run();
@@ -172,5 +176,21 @@ class Lifephp
 			  . "The error file line : {$e['line']}<br/>"
 			  . "The error trace : {$e['trace']}<br/>";
 		exit($info);  
+    }
+
+    /**
+     * @uses  Get the db connnetion object. 
+     * @param defaults to null.
+     */
+    protected static function getDb()
+    {
+        if (!empty(Life::$frame->app_config) && isset(Life::$frame->app_config['db'])) {
+            $dbConfig   = Life::$frame->app_config['db'];
+            $connnetion = $dbConfig['class'];
+            unset($dbConfig['class']);
+            return new $connnetion($dbConfig);
+        } else {
+            throw new exception('The database param array cound not found in the application');
+        }
     }
 }
