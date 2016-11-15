@@ -20,7 +20,7 @@ class View
     protected $tempVar = [];
 
     /**
-     * @use    assign the value to the template
+     * @uses   assign the value to the template
      * @access private
      * @param  mixed $name
      * @param  mixed $value
