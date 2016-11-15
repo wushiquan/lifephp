@@ -27,6 +27,11 @@ final class Life extends lifephp\core\Lifephp
      */
     public static $frame = null;
 
+    /**
+     * @var object the current object of Life class. Defaults to null.
+     */
+    public $db = null;
+
 	/**
 	 * @uses lifephp framework execute application
 	 * @param application params configuration
