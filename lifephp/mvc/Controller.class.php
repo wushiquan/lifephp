@@ -50,11 +50,42 @@ class Controller
     }
 
     /**
+     * @uses   Redirect to the specified url with the message after the specified time
+     * @access protected
+     * @param string  $url   the specified redirect url, default ''
+     * @param integer $delay the delay time, default '0'
+     * @param string  $msg   the tip massage 
+     * @return void
+     */
+    protected function redirect($url, $delay = 0, $msg = '')
+    {
+        if (empty($msg)) {
+            $msg = "The system will redirect to {$url} after {$delay} second automatically!";
+        }
+
+        if (!headers_sent()) {
+            if ($delay === 0) {
+                header('Location:' . $url);
+            } else {
+                header("refresh:{$delay};url={$url}");
+                echo($msg);
+            }
+            exit();
+        } else {
+            $str = "<meta http-equiv='Refresh' content='{$delay};URL={$url}'>";
+            if ($delay != 0) {
+                $str .= $msg;
+            }
+            exit($str);
+        }
+    }
+
+    /**
      * @uses   destruct function
      * @access public
      */
     public function __destruct()
     {
-
+        unset($this->view);
     }
 }
