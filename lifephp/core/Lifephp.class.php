@@ -2,7 +2,7 @@
 // -----------------------------------------------------------------------
 // + LifePHP - Make coding life more efficient,Let the program run faster
 // -----------------------------------------------------------------------
-// + LifePHP core class
+// + LifePHP url route core class
 // -----------------------------------------------------------------------
 // + Copyright (c) 2016 http://www.lifephp.net  All rights reserved
 // -----------------------------------------------------------------------
@@ -10,187 +10,91 @@
 // -----------------------------------------------------------------------
 // + Version: 1.0
 // -----------------------------------------------------------------------
-
 namespace lifephp\core;
-use Life;
-class Lifephp
+
+use \Exception;
+class Url
 {
+
     /**
-     * @uses   initialize application program
+     * @var default controller name
+     */
+    protected static $controllerSuffix = 'Controller';
+
+    /**
+     * @var default controller name
+     */
+    protected static $actionPrefix = 'action';
+
+    /**
+     * @var default controller name
+     */
+    protected static $defaultContName = 'site';
+
+    /**
+     * @var default action name
+     */
+    protected static $defaultActionName = 'index';
+
+    /**
+     * @uses   parse the url route
      * @access public
-     * @param  void
      * @return void
      */
-    public static function run()
-    {
-        // register autoload function
-        spl_autoload_register('lifephp\core\Lifephp::autoload');
-        // set system timezone
-        date_default_timezone_set('Asia/Shanghai');
-
-        // set error and exception handler
-        register_shutdown_function('lifephp\core\Lifephp::getFatalError');
-        set_error_handler('lifephp\core\Lifephp::lifeError');
-        set_exception_handler('lifephp\core\Lifephp::lifeException');
-
-        //Init the database connection if the '$db' object is null.
-        Life::$frame->db = self::getDb();
-
-        // run the application
-        Application::run();
-    }
-
-    /**
-     * @uses   autoload the library class
-     * @param  string $class the class name of object
-     * @return void
-     */
-    public static function autoload($class)
-    {
-		if (false !== strpos($class, '\\')) {
-            $name = strstr($class, '\\', true);
-            if (false !== strpos($name,'lifephp') || is_dir(LIFE_PATH.$name)) {
-                // Locate the namespace in the Life directory automatically
-                $path = ROOT_PATH;         
-            } elseif (false !== strpos($name,APP_NAME)){
-                // Locate the namespace in the current application directory
-                $path  = ROOT_PATH;
-            } else {
-            	$path  = ROOT_PATH;
+    public static function route()
+    { 
+        if (false !== strpos($_SERVER['REQUEST_URI'], 'index.php') && isset($_GET['r'])) {
+			$pathInfo = $_SERVER['QUERY_STRING']; 
+			$queryParam = explode('&', $pathInfo);
+            $routeSerh = false;
+            foreach($queryParam as $param){               
+                list($pathName, $pathStr) = explode('=', $param);
+                if ('r' == $pathName ) {
+                    list($controllerName, $actionName)  = explode('/', $pathStr);
+                    $routeSerh = true;
+                    unset($_GET['r']);
+                } else {
+                    continue;                          
+                }
             }
-        } else {
-        	$path = CORE_PATH;
-        } 
-       
-        $filename = $path . str_replace('\\', '/', $class) . EXT_SUFFIX;
-        if (is_file($filename)) {
-            // Window environment strictly distinguish case
-            if(OS_IS_WIN && false === strpos(str_replace('/', '\\', realpath($filename)), $class.EXT_SUFFIX)) {
-                return;
-            }
-            include $filename;
-       }
-    }    
 
-    /**
-     * @uses   define exception handler
-     * @access private
-     * @param  mixed $e exception object
-     */
-    public static function lifeException($e)
-    {
-        $error            = [];
-        $error['message'] = $e->getMessage();
-        $trace            = $e->getTrace();
-        if ('E' == $trace[0]['function']) {
-            $error['file'] = $trace[0]['file'];
-            $error['line'] = $trace[0]['line'];
-        } else {
-            $error['file'] = $e->getFile();
-            $error['line'] = $e->getLine();
+            if($routeSerh === false) 
+                throw new Exception("Error Processing Request", '505');       
+        }  elseif (false !== strpos(trim($_SERVER['REQUEST_URI'], '/'), '/')) {
+			list($controllerName, $actionName)  = explode('/',substr($_SERVER['REQUEST_URI'],1));
+        }  else {
+			$controllerName = $actionName = '';
         }
-        $error['trace'] = $e->getTraceAsString();
 
-        // send 404 status information
-        header('HTTP/1.1 404 Not Found');
-        header('Status:404 Not Found');
-        self::printError($error);	
+        define('CONTROLLER_NAME', self::getControllerName($controllerName));
+		define('ACTION_NAME', self::getActionName($actionName));	
     }
 
     /**
-     * @uses   define error handler
+     * @uses   get the true controller name
      * @access private
-     * @param  int $errno  the error type
-     * @param  string $errstr the error info
-     * @param  string $errfile the error file
-     * @param  int $errline the error line
      * @return void
      */
-    public static function lifeError($errno, $errstr, $errfile, $errline)
+    private static function getControllerName($controllerName)
     {
-        switch ($errno) {
-            case E_ERROR:
-            case E_PARSE:
-            case E_CORE_ERROR:
-            case E_COMPILE_ERROR:
-            case E_USER_ERROR:
-                ob_end_clean();
-                $errorStr = "$errstr " . $errfile . " the $errline line.";
-                self::printError($errorStr);	
-                break;
-            default:
-                $errorStr = "[$errno] $errstr " . $errfile . " the $errline line.";
-                self::printError($errorStr);	
-                break;
-        }
-    }
-
-     /**
-     * @uses   capture fatal error
-     * @access private
-     * @return void
-     */
-    public static function getFatalError()
-    {
-        if ($e = error_get_last()) {
-            switch ($e['type']) {
-                case E_ERROR:
-                case E_PARSE:
-                case E_CORE_ERROR:
-                case E_COMPILE_ERROR:
-                case E_USER_ERROR:
-                    ob_end_clean();
-                    //echo error info
-					self::printError($e);	  
-                    break;
-            }
-        }
-    }
-
-   /**
-     * @uses   output the error info
-     * @access private
-     * @return void
-     */
-    private static function printError($e)
-    {   
-        //echo error info
-		if (!is_array($e)) {
-            $trace   = debug_backtrace();
-            $message = $e;
-            $e       = [];
-            $e['message'] = $message;
-            $e['file']    = $trace[0]['file'];
-            $e['line']    = $trace[0]['line'];
-
-            ob_start();
-            debug_print_backtrace();
-            $e['trace'] = ob_get_clean();
-		} else {
-			$e['trace'] = '';	
-		}
-
-		$info = "The LifePHP framework occurs an error or throws execption : <br/>"
-			  . "The error message : {$e['message']}<br/>"
-			  . "The error file location : {$e['file']}<br/>"
-			  . "The error file line : {$e['line']}<br/>"
-			  . "The error trace : {$e['trace']}<br/>";
-		exit($info);  
+    	if ('' === $controllerName) {
+    		$controllerName	= self::$defaultContName;  
+    	}
+    	define('CONTROLLER_ALIAS', strtolower($controllerName));
+    	return strip_tags(ucfirst($controllerName)) . self::$controllerSuffix;
     }
 
     /**
-     * @uses  Get the db connnetion object. 
-     * @param defaults to null.
+     * @uses   get the true action name
+     * @access private
+     * @return void
      */
-    protected static function getDb()
+    private static function getActionName($actionName)
     {
-        if (!empty(Life::$frame->app_config) && isset(Life::$frame->app_config['db'])) {
-            $dbConfig   = Life::$frame->app_config['db'];
-            $connnetion = $dbConfig['class'];
-            unset($dbConfig['class']);
-            return new $connnetion($dbConfig);
-        } else {
-            throw new exception('The database param array cound not found in the application');
-        }
+    	if ('' === $actionName) {
+    		$actionName	= self::$defaultActionName;  
+    	}
+    	define('ACTION_ALIAS', strtolower($actionName));
+    	return self::$actionPrefix . strip_tags(ucfirst($actionName));
     }
 }
