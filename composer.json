@@ -4,7 +4,7 @@
     "keywords": [
         "lifephp",
         "framework",
-        "php",
+        "php"
     ],
     "homepage": "https://github.com/wushiquan/lifephp/",
     "type": "library",
@@ -24,7 +24,7 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "ext-mbstring": "*",
+        "ext-mbstring": "*"
     },
     "bin": [
         "lifephp"
