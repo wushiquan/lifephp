@@ -9,13 +9,13 @@
     "homepage": "https://github.com/wushiquan/lifephp/",
     "type": "library",
     "license": "MIT License",
-    "authors": [
+    "author": [
         {
             "name": "shiquanwu ",
             "email": "2448154608@qq.com",
             "homepage": "https://github.com/wushiquan/",
             "role": "Founder and project lead"
-        },
+        }
     ],
     "support": {
         "issues": "https://github.com/wushiquan/lifephp/issues?state=open",
