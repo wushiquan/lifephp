@@ -4,11 +4,11 @@
     "keywords": [
         "lifephp",
         "framework",
-        'php',
+        "php",
     ],
     "homepage": "https://github.com/wushiquan/lifephp/",
     "type": "library",
-    "license": MIT License",
+    "license": "MIT License",
     "authors": [
         {
             "name": "shiquanwu ",
