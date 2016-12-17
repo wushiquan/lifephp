@@ -47,7 +47,7 @@ class Lifephp
      */
     public static function autoload($class)
     {
-        if (false !== strpos($class, '\\')) {
+		if (false !== strpos($class, '\\')) {
             $name = strstr($class, '\\', true);
             if (false !== strpos($name,'lifephp') || is_dir(LIFE_PATH.$name)) {
                 // Locate the namespace in the Life directory automatically
@@ -56,10 +56,10 @@ class Lifephp
                 // Locate the namespace in the current application directory
                 $path  = ROOT_PATH;
             } else {
-                $path  = ROOT_PATH;
+            	$path  = ROOT_PATH;
             }
         } else {
-            $path = CORE_PATH;
+        	$path = CORE_PATH;
         } 
        
         $filename = $path . str_replace('\\', '/', $class) . EXT_SUFFIX;
@@ -94,7 +94,7 @@ class Lifephp
         // send 404 status information
         header('HTTP/1.1 404 Not Found');
         header('Status:404 Not Found');
-        self::printError($error);   
+        self::printError($error);	
     }
 
     /**
@@ -116,11 +116,11 @@ class Lifephp
             case E_USER_ERROR:
                 ob_end_clean();
                 $errorStr = "$errstr " . $errfile . " the $errline line.";
-                self::printError($errorStr);    
+                self::printError($errorStr);	
                 break;
             default:
                 $errorStr = "[$errno] $errstr " . $errfile . " the $errline line.";
-                self::printError($errorStr);    
+                self::printError($errorStr);	
                 break;
         }
     }
@@ -141,7 +141,7 @@ class Lifephp
                 case E_USER_ERROR:
                     ob_end_clean();
                     //echo error info
-                    self::printError($e);     
+					self::printError($e);	  
                     break;
             }
         }
@@ -155,7 +155,7 @@ class Lifephp
     private static function printError($e)
     {   
         //echo error info
-        if (!is_array($e)) {
+		if (!is_array($e)) {
             $trace   = debug_backtrace();
             $message = $e;
             $e       = [];
@@ -166,16 +166,16 @@ class Lifephp
             ob_start();
             debug_print_backtrace();
             $e['trace'] = ob_get_clean();
-        } else {
-            $e['trace'] = '';   
-        }
+		} else {
+			$e['trace'] = '';	
+		}
 
-        $info = "The LifePHP framework occurs an error or throws execption : <br/>"
-              . "The error message : {$e['message']}<br/>"
-              . "The error file location : {$e['file']}<br/>"
-              . "The error file line : {$e['line']}<br/>"
-              . "The error trace : {$e['trace']}<br/>";
-        exit($info);  
+		$info = "The LifePHP framework occurs an error or throws execption : <br/>"
+			  . "The error message : {$e['message']}<br/>"
+			  . "The error file location : {$e['file']}<br/>"
+			  . "The error file line : {$e['line']}<br/>"
+			  . "The error trace : {$e['trace']}<br/>";
+		exit($info);  
     }
 
     /**
