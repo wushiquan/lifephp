@@ -28,23 +28,32 @@ class SiteController extends Controller
     public function actionIndex()
     {
     	//INSRET EXAMPLE
-        $CommnetModel = new Comment();
-        $CommnetModel->user_id = mt_rand(1,1000000);
-        $CommnetModel->content = "love you " . $CommnetModel->user_id;
-        $rows = $CommnetModel->insert();
+        // $CommnetModel = new Comment();
+        // $CommnetModel->user_id = mt_rand(1,1000000);
+        // $CommnetModel->content = "love you " . $CommnetModel->user_id;
+        // $rows = $CommnetModel->insert();
 
         //SELECT EXAMPLE
         //$record = Comment::model()->queryAll(['select'=>'id,content','where'=>'user_id > 1000']);        
-        //$record = Comment::model()->queryOne(['select'=>'id,content','where'=>'user_id = 2']);   
+        //$record = Comment::model()->queryOne(['select'=>'id,content','where'=>'user_id = 2']);  
+
+        //UPDATE EXAMPLE
+        $CommnetModel = new Comment();  
+        $CommnetModel->user_id = 123456;
+        $CommnetModel->content = "we are 123456";
+        $rows = $CommnetModel->update(['id'=>2]);
+ 
+        //DELETE EXAMPLE
+        // $rows = Comment::model()->delete(['id'=>15]);          
 
         // $connection = Life::$frame->db;
         // $userid = mt_rand(1,1000000);
         // $sql = 'INSERT INTO `tbl_comment` (content,user_id) values("love you'.$userid.'","'.$userid.'")';
         // $rows = $connection->createCommand($sql)->execute();
 
-        // $connection = Life::$frame->db;
-        // $sql = 'SELECT * FROM `tbl_comment`';
-        // $rows = $connection->createCommand($sql)->queryAll();  
+         // $connection = Life::$frame->db;
+         // $sql = 'SELECT * FROM `tbl_comment`';
+         // $rows = $connection->createCommand($sql)->queryAll();  
 
         Tool::printr($rows);
     	$this->display('index',['order'=>'SM23748934','username'=>'13824394613']);
