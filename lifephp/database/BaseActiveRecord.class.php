@@ -87,7 +87,48 @@ class BaseActiveRecord extends Model
 			return $this->_sqlstatement . "({$params['valueStr']})";
     	}
     }
-    
+  
+    /**
+     * @uses   Returns the whole sql statement of the 'update' operation.
+     * @param  string $table the table name used to perform update operation.
+     * @param  array $params the parameter array which should be used.
+     * @return If success then returns the whole sql statement
+     *         otherwise, returns null if fail.        
+     */
+    public function getUpdateSqlStatement($table = '', $params = [])
+    {
+        $tableName = $this->getTableName($table);   
+        if (!empty($params) && isset($params['updateColumnStr'])) {
+            $this->_sqlstatement = self::getSqlKeyWord('update');
+            $this->_sqlstatement .= " $tableName " . self::getSqlKeyWord('set') . " {$params['updateColumnStr']} ";
+            if(!empty($params['where']) && is_array($params['where'])){
+                $this->_sqlstatement .= $this->parseWhere($params['where']);
+            }
+            return $this->_sqlstatement;
+        }
+        return null;
+    }
+
+    /**
+     * @uses   Returns the whole sql statement of the 'delete' operation.
+     * @param  string $table the table name used to perform delete operation.
+     * @param  array $params the parameter array which should be used.
+     * @return If success then returns the whole sql statement
+     *         otherwise, returns null if fail.        
+     */
+    public function getDeleteSqlStatement($table = '', $params = [])
+    {
+        $tableName = $this->getTableName($table);   
+        if (!empty($params) && isset($params['where'])) {
+            $this->_sqlstatement = self::getSqlKeyWord('delete') . " $tableName ";
+            if(!empty($params['where']) && is_array($params['where'])){                
+                $this->_sqlstatement .= $this->parseWhere($params['where']);
+            }
+            return $this->_sqlstatement;
+        }
+        return null;
+    }
+
     /**
      * @uses   Returns the keyword of database with the key.
      * @param  string $table the table name used to perform insert operation.
@@ -102,6 +143,12 @@ class BaseActiveRecord extends Model
     		case 'select':
     			return 'SELECT';
     			break;
+            case 'update':
+                return 'UPDATE';
+                break;  
+            case 'delete':
+                return 'DELETE FROM';
+                break;                               
      		case 'values':
     			return 'VALUES';
     			break;  
@@ -113,7 +160,13 @@ class BaseActiveRecord extends Model
     			break;  
       		case 'where':
     			return 'WHERE';
-    			break;     	   			   			    			 			
+    			break;   
+            case 'set':
+                return 'SET';
+                break; 
+            case 'and':
+                return 'AND';
+                break;                    	   			   			    			 			
     		default:
     		    return '';
     		    break;		
@@ -156,5 +209,23 @@ class BaseActiveRecord extends Model
     		$tableName = $table;
     	}
     	return $tableName;
+    }
+
+    /**
+     * @uses   Parses the where conditions.
+     * @param  array $where the where array needs to be parsed.
+     * @return string the whole where sql.
+     */
+    private function parseWhere($where)
+    {
+        if(!empty($where) && is_array($where)){
+            $whereParams = [];
+            foreach($where as $where_key => $where_val){
+                $whereParams[] = "$where_key = '$where_val'";
+            }
+             
+            return self::getSqlKeyWord('where') . ' ' . implode(' ' . self::getSqlKeyWord('and') . ' ', $whereParams);
+        }
+        return null;
     }
 }
