@@ -72,6 +72,58 @@ class ActiveRecord extends BaseActiveRecord
     }
 
     /**
+     * @uses Update all rows of the associated database table which is suitable for the condition using the attribute values of this record.
+     *
+     * For example, to update all customer records which need to be changed:
+     *
+     * ```php
+     * $customer = new User;
+     * $customer->email = $email;
+     * $customer->update(['id'=>234]);
+     * ```
+     *
+     * @param array $attributes list of attributes that need to be saved. Defaults to null,
+     *        meaning all attributes that are loaded from DB will be saved.
+     *        array $condition the condition that are suitable for.      
+     *      
+     * @return boolean whether the attributes are valid and the record is updated successfully.
+     * @throws \Exception in case update failed.
+     */
+    public function update($condition = [], $attributes = null)
+    {
+        if ($attributes === null) {
+            $attributes = $this->getAttributes();
+        }   
+        foreach ($attributes as $column => $value) {
+            if (!empty($value)) {
+                $updateColumnArr[] = "$column = ' " . $value . "'";               
+            }
+        }
+
+        $updateColumnStr = implode(',', $updateColumnArr);
+        $optSql = $this->getUpdateSqlStatement(static::tableName(), ['where'=>$condition, 'updateColumnStr'=>$updateColumnStr]);
+        $result = static::createCommand($optSql)->execute();
+        return $result;
+    }
+
+    /**
+     * @uses Delete the rows from table according to the where condition.
+      * For example, to delete some records from this table:
+     *
+     * ```php
+     * $record = Comment::model()->delete(['id' => 2]);   
+     * ```
+     * @param array $condition the condition that the records belong to.
+     * @return the row nums which are affected.
+     */
+    public function delete($condition = [])
+    {
+        $optSql = $this->getDeleteSqlStatement(static::tableName(), ['where'=>$condition]);
+        $result = static::createCommand($optSql)->execute();
+        return $result;
+    }
+
+    /**
      * @uses get current model object    
      * @return object $this current model object. 
      */
