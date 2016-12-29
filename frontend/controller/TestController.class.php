@@ -25,7 +25,8 @@ class TestController extends Controller
      */
     public function actionIndex()
     {
-        $assignAction = $_GET;
-        Tool::printr($assignAction);
+        //Test getting the user ip address.
+        $ipAddress = Life::$frame->request->getUserIP();
+        Tool::printr($ipAddress);
     }
 }
