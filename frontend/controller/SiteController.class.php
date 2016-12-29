@@ -27,7 +27,19 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-    	//INSRET EXAMPLE
+        $orderno = 'SM23748934';
+        $username = '13824394613';
+    	$this->display('index',['order'=>$orderno, 'username'=>$username]);
+    }
+
+    /**
+     * @uses   Test lifephp database CURD operation, such like the execution create, update, read and delete sql statement.
+     * @access public
+     * @return void
+     */
+    public function actionTestDb()
+    {
+        //INSRET EXAMPLE
         // $CommnetModel = new Comment();
         // $CommnetModel->user_id = mt_rand(1,1000000);
         // $CommnetModel->content = "love you " . $CommnetModel->user_id;
@@ -56,7 +68,6 @@ class SiteController extends Controller
          // $rows = $connection->createCommand($sql)->queryAll();  
 
         Tool::printr($rows);
-    	$this->display('index',['order'=>'SM23748934','username'=>'13824394613']);
     }
 
     /**
