@@ -13,6 +13,8 @@
 return [
     'name' => 'app-frontend',
     'basePath' => dirname(__DIR__),
+    'language'   => 'zh-CN',
+    'timeZone' => 'Asia/Shanghai',
     'controllerNamespace' => 'frontend\controller',
     'domain' => 'http://www.lifephp.com',
     'db' => require(__DIR__ . '/' . 'dbconfig.php'),
