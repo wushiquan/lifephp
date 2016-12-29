@@ -26,7 +26,7 @@ class Lifephp
         // register autoload function
         spl_autoload_register('lifephp\core\Lifephp::autoload');
         // set system timezone
-        date_default_timezone_set('Asia/Shanghai');
+        date_default_timezone_set(!empty(Life::$frame->app_config['timeZone'])?Life::$frame->app_config['timeZone']:'Asia/Shanghai');
 
         // set error and exception handler
         register_shutdown_function('lifephp\core\Lifephp::getFatalError');
@@ -35,6 +35,9 @@ class Lifephp
 
         //Init the database connection if the '$db' object is null.
         Life::$frame->db = self::getDb();
+
+        //For framework requirement, it is necessary to init other framework core component.
+        self::initOtherCoreComponent();
 
         // run the application
         Application::run();
@@ -186,11 +189,23 @@ class Lifephp
     {
         if (!empty(Life::$frame->app_config) && isset(Life::$frame->app_config['db'])) {
             $dbConfig   = Life::$frame->app_config['db'];
-            $connnetion = $dbConfig['class'];
+            $connnetion = !empty($dbConfig['class']) ? $dbConfig['class'] : 'lifephp\database\Connection';
             unset($dbConfig['class']);
             return new $connnetion($dbConfig);
         } else {
-            throw new exception('The database param array cound not found in the application');
+            return null;
+        }
+    }
+
+    /**
+     * @uses  Init other core component object.
+     * @param defaults to null.
+     */
+    private static function initOtherCoreComponent()
+    {
+        $componentClassArr = Life::$frame->getComponentClassName();
+        foreach($componentClassArr as $class_name => $class_namespace){
+            Life::$frame->$class_name = new $class_namespace;
         }
     }
 }
