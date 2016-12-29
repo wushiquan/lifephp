@@ -36,7 +36,7 @@ final class Life extends lifephp\core\Lifephp
      * @var 
      */
     public $core_class_tag = [ 
-    	'request' => 'lifephp\http\request',
+    	'request' => 'lifephp\http\Request',
     ];
 
 	/**
