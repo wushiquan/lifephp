@@ -28,9 +28,16 @@ final class Life extends lifephp\core\Lifephp
     public static $frame = null;
 
     /**
-     * @var object the current object of Life class. Defaults to null.
+     * @var object the database object of lifephp framework. Defaults to null.
      */
     public $db = null;
+
+    /**
+     * @var 
+     */
+    public $core_class_tag = [ 
+    	'request' => 'lifephp\http\request',
+    ];
 
 	/**
 	 * @uses lifephp framework execute application
@@ -45,6 +52,21 @@ final class Life extends lifephp\core\Lifephp
 		//Init the application
 		Life::$frame = $this;
 		parent::run();
+	}
+
+	/**
+	 * @uses  Get the default component class namespace of current component class name.
+	 * @param string $class_name the current component class name
+	 * @return mixed if exists, returns component class namespace ; otherwise, returns null.
+	 */
+	public function getComponentClassName($class_name = '')
+	{
+		if($class_name !== ''){
+			return isset($this->core_class_tag[$class_name]) ? $this->core_class_tag[$class_name] : null;
+		}else{
+			return $this->core_class_tag;
+		}
+		
 	}
 
 }
