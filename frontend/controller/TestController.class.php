@@ -27,6 +27,8 @@ class TestController extends Controller
     {
         //Test getting the user ip address.
         $ipAddress = Life::$frame->request->getUserIP();
-        Tool::printr($ipAddress);
+        $isHttpsProto = Life::$frame->request->getIsSecureProtocol();
+        $contentType = Life::$frame->request->getContentType();
+        Tool::printr($contentType);
     }
 }
