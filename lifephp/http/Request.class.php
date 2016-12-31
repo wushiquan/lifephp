@@ -85,4 +85,37 @@ class Request
     {
         return isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : null;
     }
+
+    /**
+     * @uses   Returns part of the request URL.
+     * @return string part of the request URL that is after the question mark
+     */
+    public function getQueryString()
+    {
+        return isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
+    }
+
+    /**
+     * @uses   Return whether if the request is sent via https secure protocol.
+     * @return boolean whether if the request is sent via https secure protocol
+     */
+    public function getIsSecureProtocol()
+    {
+        return (isset($_SERVER['HTTPS']) && (strcasecmp($_SERVER['HTTPS'], 'on') === 0 || $_SERVER['HTTPS'] == 1))
+            || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0);
+    }
+
+    /**
+     * @uses   Returns request content-type
+     * @return string request content-type. Null will be returned if this information is not available.
+     */
+    public function getContentType()
+    {
+        if (isset($_SERVER['CONTENT_TYPE'])) {
+            return $_SERVER['CONTENT_TYPE'];
+        } elseif (isset($_SERVER['HTTP_CONTENT_TYPE'])) {           
+            return $_SERVER['HTTP_CONTENT_TYPE'];
+        }
+        return null;
+    }
 }	
