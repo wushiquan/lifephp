@@ -19,7 +19,7 @@ use lifephp\common\Tool;
 class TestController extends Controller
 {
     /**
-     * @uses   the index page 
+     * @uses   Test the http request class of lifephp framework.
      * @access public
      * @return void
      */
@@ -29,6 +29,9 @@ class TestController extends Controller
         $ipAddress = Life::$frame->request->getUserIP();
         $isHttpsProto = Life::$frame->request->getIsSecureProtocol();
         $contentType = Life::$frame->request->getContentType();
-        Tool::printr($contentType);
+
+        $isGetRequest = Life::$frame->request->isGet();
+        $getData = Life::$frame->request->get();
+        Tool::printr($getData);
     }
 }
