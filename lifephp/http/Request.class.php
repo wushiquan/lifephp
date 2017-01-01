@@ -118,4 +118,119 @@ class Request
         }
         return null;
     }
+
+    /**
+     * @uses   Returns the method of the current request.
+     * @return string request method, such as GET, POST, HEAD, PUT, PATCH, OPTIONS, DELETE.
+     */
+    public function getReqMethod()
+    {        
+        if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
+            return strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
+        }
+        
+        if(defined('REQUEST_METHOD')){
+            return strtoupper(REQUEST_METHOD);
+        }
+
+        if (isset($_SERVER['REQUEST_METHOD'])) {
+            return strtoupper($_SERVER['REQUEST_METHOD']);
+        } 
+        // If system fails to get, returns 'GET' method by default.       
+        return 'GET';
+    }
+
+    /**
+     * @uses   Returns whether this is a GET request.
+     * @return boolean whether this is a GET request.
+     */
+    public function isGet()
+    {
+        return $this->getReqMethod() === 'GET';
+    }
+
+    /**
+     * @uses   Returns whether this is a POST request.
+     * @return boolean whether this is a POST request.
+     */
+    public function isPost()
+    {
+        return $this->getReqMethod() === 'POST';
+    }
+
+    /**
+     * @uses   Returns whether this is a PUT request.
+     * @return boolean whether this is a PUT request.
+     */
+    public function isPut()
+    {
+        return $this->getReqMethod() === 'PUT';
+    }
+
+   /**
+     * @uses   Returns whether this is a DELETE request.
+     * @return boolean whether this is a DELETE request.
+     */
+    public function isDelete()
+    {
+        return $this->getReqMethod() === 'DELETE';
+    }
+
+    /**
+     * @uses   Returns whether this is a HEAD request.
+     * @return boolean whether this is a HEAD request.
+     */
+    public function isHead()
+    {
+        return $this->getReqMethod() === 'HEAD';
+    }
+
+   /**
+     * @uses   Returns whether this is an OPTIONS request.
+     * @return boolean whether this is a OPTIONS request.
+     */
+    public function isOptions()
+    {
+        return $this->getReqMethod() === 'OPTIONS';
+    }
+
+    /**
+     * @uses   Returns whether this is a PATCH request.
+     * @return boolean whether this is a PATCH request.
+     */
+    public function isPatch()
+    {
+        return $this->getReqMethod() === 'PATCH';
+    }
+
+    /**
+     * @uses   Returns whether this is a XMLHttpRequest request.
+     * @return boolean whether this is a XMLHttpRequest request.
+     */
+    public function isAjax()
+    {
+        if (defined('IS_AJAX')) {
+            return IS_AJAX;    
+        } else {
+            return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+        }               
+    }
+
+    /**
+     * @uses   Returns post data with parameter name;otherwise,returns the whole post data.
+     * @return mixed the post data array or the post value of parameter name $post_name.
+     */
+    public function post($post_name = '')
+    {
+        return ($post_name !== '' && isset($_POST[$post_name])) ? $_POST[$post_name]: $_POST;
+    }
+
+    /**
+     * @uses   Returns get data with parameter name;otherwise,returns the whole get data.
+     * @return mixed the get data array or the get value of parameter name $get_name.
+     */
+    public function get($get_name = '')
+    {
+        return ($get_name !== '' && isset($_GET[$get_name])) ? $_GET[$get_name]: $_GET;
+    }
 }	
