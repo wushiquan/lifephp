@@ -60,9 +60,9 @@ class Url
 
             if($routeSerh === false) 
                 throw new Exception("Error Processing Request", '505');       
-        }  elseif (false !== strpos(trim($_SERVER['REQUEST_URI'], '/'), '/')) {
-			list($controllerName, $actionName)  = explode('/',substr($_SERVER['REQUEST_URI'],1));
-        }  else {
+        } elseif (false !== strpos(trim($_SERVER['REQUEST_URI'], '/'), '/')) {
+			list($controllerName, $actionName)  = explode('/', substr($_SERVER['PATH_INFO'], 1));
+        } else {
 			$controllerName = $actionName = '';
         }
 
