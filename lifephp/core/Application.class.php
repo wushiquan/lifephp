@@ -24,12 +24,6 @@ class Application
         // define current system constant
         define('REQUEST_TIME', $_SERVER['REQUEST_TIME']);
         define('REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
-        define('IS_GET', REQUEST_METHOD == 'GET' ? true : false);
-        define('IS_POST', REQUEST_METHOD == 'POST' ? true : false);
-        define('IS_PUT', REQUEST_METHOD == 'PUT' ? true : false);
-        define('IS_DELETE', REQUEST_METHOD == 'DELETE' ? true : false);
-        define('IS_HEAD', REQUEST_METHOD == 'HEAD' ? true : false);
-
         // define if the request type is ajax
 		define('IS_AJAX', ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || !empty($_POST['FORM_AJAX_SUBMIT']) || !empty($_GET['FORM_AJAX_SUBMIT'])) ? true : false);
 
