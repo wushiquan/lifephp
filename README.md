@@ -1,17 +1,17 @@
 # LifePHP php Framework Version 1.0
-LifePHP php framework，an excellent and open source php framework which aims at 'Make coding life more efficient,Let the program run faster'.
+LifePHP php framework，an excellent and open source php framework which aims at 'Make coding life more efficient,let the program run faster'.
 
-## DIRECTORY STRUCTURE
+## Directory Structure
 >>   frontend/            an application used lifephp framework<br>
 >>   lifephp/              this is the core base structure of lifephp php framework
 
-## REQUIREMENTS
+## Requirements
 The minimum requirement by LifePHP  is that your server supports PHP 5.3 version.
 
-## OFFICIAL WEBSITE
+## Official Website
 [lifephp website](http://www.lifephp.net)
 
-Thank you for using lifephp php framework to work as web development and we will provide you with the best framework resorce 
+Thank you for using lifephp php framework to work as web development and we will provide you with the best framework resource 
 forever.
 
 
