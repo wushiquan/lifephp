@@ -26,6 +26,9 @@ composer.phar update
 ## Official Website
 [lifephp website](http://www.lifephp.net)
 
+## License
+The Lifephp framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
 Thank you for using lifephp php framework to work as web development and we will provide you with the best framework resource 
 forever.
 
