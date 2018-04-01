@@ -22,6 +22,10 @@ You can then later update Lifephp using composer:
 ```javascript
 composer.phar update
 ```
+Besides, you can also create a lifephp project with version dev-master quickly under an application folder named 'lifephp' with the following composer command:
+```javascript
+composer create-project --prefer-dist wushiquan/lifephp lifephp dev-master
+```
 
 ## Official Website
 [lifephp website](http://www.lifephp.net)
